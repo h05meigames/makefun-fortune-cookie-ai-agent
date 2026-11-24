@@ -37,6 +37,16 @@ if (/[\r\n]/.test(LINE)) {
 if (/[\u0000-\u001f\u007f-\u009f]/.test(LINE)) {
   throw new Error("fortune line must not contain control characters");
 }
+// Reject invisible Unicode format characters (zero-width space, joiners,
+// direction marks, ...) — they would inflate the count without showing
+// up in the fortune and could break the judge's comparison.
+if (/[\u200b-\u200f\u202a-\u202e\u2060-\u2064\ufeff]/.test(LINE)) {
+  throw new Error("fortune line must not contain invisible format characters");
+}
+// A fortune that is only whitespace is not a fortune.
+if (LINE.trim().length === 0) {
+  throw new Error("fortune line must not be blank");
+}
 
 const dir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
 mkdirSync(dir, { recursive: true });

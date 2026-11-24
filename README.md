@@ -17,7 +17,8 @@ bounty on [make.fun](https://make.fun/r/0ene8b3q).
 `main.ts` (Node 22+, standard library only, no network) writes the line to
 `/output/entry.txt` — one line, UTF-8, no trailing newline, 104 code points,
 well within the 140-character limit. It guards the line before writing
-(1–140 code points, single line, no newline or control characters) and
+(1–140 code points, single line, no newline, control, or invisible format
+characters, and not blank) and
 then reads the file back to verify the bytes on disk match the guarded
 line exactly. The output is deterministic: the same sha256 on every run.
 
